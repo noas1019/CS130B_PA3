@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <stdio.h>
 #include <stdlib.h>
 #include <fstream>
 #include <vector>
@@ -81,19 +82,14 @@ int main(int argc, char** argv) {
 
     int xLength = DNA1.length() + 1;
     int yLength = DNA2.length() + 1;
-    cout << "xLength: " << xLength << endl;
-    cout << "yLength: " << yLength << endl;
-    double ScoreMatrix[yLength][xLength];
+    double** ScoreMatrix = new double*[yLength];
+    for (int i = 0; i < yLength; ++i) {
+        ScoreMatrix[i] = new double[xLength];
+    }
     for (int i = 0; i < xLength; i++) {
-        if (i > xLength - 2) {
-            cout << "index i: " << i << endl;
-        }
         ScoreMatrix[0][i] = d * i;
     }
     for (int j = 0; j < yLength; j++) {
-        if (j > yLength - 2) {
-            cout << "index j: " << j << endl;
-        }
         ScoreMatrix[j][0] = d * j; 
     }
     double match, skip1, skip2, change;
@@ -102,19 +98,12 @@ int main(int argc, char** argv) {
             match = ScoreMatrix[j - 1][i - 1] + getScore(DNA1[i - 1], DNA2[j - 1], m, c);
             skip1 = ScoreMatrix[j - 1][i] + d;
             skip2 = ScoreMatrix[j][i - 1] + d;
-            if (j == yLength-1 && i == xLength-1) {
-                cout << "match: " << match << endl;
-                cout << "skip1: " << skip1 << endl;
-                cout << "skip2: " << skip2 << endl;
-            }
             ScoreMatrix[j][i] = (double)max({ match, skip1, skip2});
         }
     }
 
     int sizeDNA1 = DNA1.length();
     int sizeDNA2 = DNA2.length();
-    cout << "DNA1 length: " << sizeDNA1 << endl;
-    cout << "DNA2 length: " << sizeDNA2 << endl;
     string align_DNA1 = "";
     string align_DNA2 = "";
     while (sizeDNA1 > 0 || sizeDNA2 > 0) {
@@ -155,7 +144,7 @@ int main(int argc, char** argv) {
         }
     }
 
-    cout << "Match measure: " << m << endl;
+    /*cout << "Match measure: " << m << endl;
     cout << "Change measure: " << c << endl;
     cout << "Skip measure: " << d << endl;
     cout << "Filename1: " << filename1 << endl;
@@ -167,11 +156,16 @@ int main(int argc, char** argv) {
             cout << ScoreMatrix[j][i] << " ";
         }
         cout << endl;
-    }
+    }*/
 
     cout << similarityScore << endl;
     cout << align_DNA1 << endl;
     cout << align_DNA2 << endl;
+    for (int i = 0; i < yLength; ++i) {
+        delete[] ScoreMatrix[i];
+
+    }
+    delete[] ScoreMatrix;
 
     return 0;
 }
