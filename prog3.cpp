@@ -81,11 +81,19 @@ int main(int argc, char** argv) {
 
     int xLength = DNA1.length() + 1;
     int yLength = DNA2.length() + 1;
+    cout << "xLength: " << xLength << endl;
+    cout << "yLength: " << yLength << endl;
     double ScoreMatrix[yLength][xLength];
     for (int i = 0; i < xLength; i++) {
+        if (i > xLength - 2) {
+            cout << "index i: " << i << endl;
+        }
         ScoreMatrix[0][i] = d * i;
     }
     for (int j = 0; j < yLength; j++) {
+        if (j > yLength - 2) {
+            cout << "index j: " << j << endl;
+        }
         ScoreMatrix[j][0] = d * j; 
     }
     double match, skip1, skip2, change;
